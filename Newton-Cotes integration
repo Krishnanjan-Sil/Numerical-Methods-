@@ -1,0 +1,57 @@
+import numpy as np
+
+# Newton-Cotes integration
+# integrate sin(x) dx from 0 to π/2
+
+# Solve ∫[a, b] f(x)dx using m-th order Newton-Cotes method
+def Newton_cotes(m, f, a, b):
+    h = (b - a) / (m - 1)
+    
+    if m == 2:  # Trapezoidal rule
+        return (b - a) * (f(a) + f(b)) / 2
+    
+    elif m == 3:  # Simpson's rule
+        return (b - a) * (f(a) + 4 * f((a + b) / 2) + f(b)) / 6
+    
+    elif m == 4:  # 3-point Newton-Cotes
+        return (b - a) * (f(a) + 3 * (f(a + h) + f(a + 2 * h)) + f(b)) / 8
+    
+    elif m == 5:  # 4-point Newton-Cotes
+        return (b - a) * (7 * (f(a) + f(b)) + 32 * (f(a + h) + f(b - h)) + 12 * f(a + 2 * h)) / 90
+    
+    elif m == 6:  # 5-point Newton-Cotes
+        return (b - a) * (19 * (f(a) + f(b)) + 75 * (f(a + h) + f(b - h)) + 50 * (f(a + 2 * h) + f(a + 3 * h))) / 288
+    
+    else:
+        raise ValueError("Order m not supported.")
+
+# Trapezoid rule for a general number of points
+def Newton_cotes2(f, a, b, n):
+    h = (b - a) / (n - 1)
+    ans = 0
+    for i in range(n):
+        ans += f(a + i * h)
+    ans -= (f(a) + f(b)) / 2
+    return h * ans
+
+# Define the function to be integrated
+def f(x):
+    return np.sin(x)
+
+# Example usage: integrate sin(x) from 0 to π/2
+a = 0
+b = np.pi / 2
+
+# Applying the Newton-Cotes method for different orders
+result_order_2 = Newton_cotes(2, f, a, b)
+result_order_3 = Newton_cotes(3, f, a, b)
+result_order_5 = Newton_cotes(5, f, a, b)
+
+# Applying the Newton-Cotes with trapezoid rule (n points)
+result_trapezoid = Newton_cotes2(f, a, b, 5)
+
+# Print results
+print(f"Result (m=2, trapezoidal rule): {result_order_2}")
+print(f"Result (m=3, Simpson's rule): {result_order_3}")
+print(f"Result (m=5, 4-point rule): {result_order_5}")
+print(f"Result (Trapezoid rule, n=5): {result_trapezoid}")
