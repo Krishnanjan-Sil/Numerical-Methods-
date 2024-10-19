@@ -1,0 +1,31 @@
+# Import the required Python libraries
+import numpy as np
+import matplotlib.pyplot as plt
+from scipy import interpolate
+
+# Define the input arrays (assuming xarray and yarray from previous code)
+xarray = np.array([2, 3, 4, 5])
+yarray = np.array([1/2.0, 1/3.0, 1/4.0, 1/5.0])
+
+# Generate values for x in the range 2 to 5 with a step of 0.25
+x = np.arange(2, 5, 0.25)
+
+# Create a spline representation of the data
+tck = interpolate.splrep(xarray, yarray)
+
+# Apply the spline to each value in x and store the results in yspline
+yspline = []
+for x_p in x:
+    yspline.append(interpolate.splev(x_p, tck))
+
+# Convert the spline values to a numpy array
+yspline = np.array(yspline)
+
+# Print the spline values
+print("Using spline: ", yspline)
+
+# Optional: Plotting the results
+plt.plot(xarray, yarray, 'o', label="Data Points")
+plt.plot(x, yspline, '-', label="Spline Interpolation")
+plt.legend()
+plt.show()
